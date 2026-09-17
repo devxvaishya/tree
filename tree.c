@@ -52,6 +52,8 @@ char xpattern[PATH_MAX];
 
 int mb_cur_max;
 
+int maxdepth=0;
+
 #ifdef __EMX__
 const u_short ifmt[]={ FILE_ARCHIVED, FILE_DIRECTORY, FILE_SYSTEM, FILE_HIDDEN, FILE_READONLY, 0};
 #else
@@ -410,6 +412,16 @@ int main(int argc, char **argv)
 	      flag.s = flag.du = (opt_toggle? !flag.du : true);
 	      break;
 	    }
+      if(!strcmp("--stat",argv[i])){
+        j = strlen(argv[i])-1;
+        flag.stat = true;
+        break;
+      }
+      if(!strcmp("--size",argv[i])){
+        j = strlen(argv[i]) - 1;
+        flag.size = true;
+        break;
+      }
 	    if (!strcmp("--prune",argv[i])) {
 	      j = strlen(argv[i])-1;
 	      flag.prune = (opt_toggle? !flag.prune : true);

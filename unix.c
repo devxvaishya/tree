@@ -27,18 +27,28 @@ static char info[512] = {0};
 extern char realbasepath[PATH_MAX];
 extern size_t dirpathoffset;
 
+extern int maxdepth;
+
 int unix_printinfo(char *dirname, struct _info *file, int level)
 {
   UNUSED(dirname);
 
   fillinfo(info, file);
+  
   if (flag.metafirst) {
     if (info[0] == '[') fprintf(outfile, "%s  ",info);
+    
     if (!flag.noindent) indent(level);
-  } else {
+    
+  } 
+  else {
     if (!flag.noindent) indent(level);
     if (info[0] == '[') fprintf(outfile, "%s  ",info);
   }
+  if(flag.size){
+    fprintf(outfile,"  [Size: %ld]  ", file->size);
+  }
+  
   return 0;
 }
 
@@ -141,8 +151,12 @@ void unix_report(struct totals tot)
     psize(buf, tot.size);
     fprintf(outfile,"%s%s used in ", buf, flag.h || flag.si? "" : " bytes");
   }
-  if (flag.d)
+  if (flag.d) {
     fprintf(outfile,"%ld director%s\n",tot.dirs,(tot.dirs==1? "y":"ies"));
+  }
+  if (flag.stat) {
+    fprintf(outfile,"\nDirectories: %ld\nFiles: %ld \nDepth: %d\n\n",tot.dirs, tot.files, maxdepth);
+  }
   else
     fprintf(outfile,"%ld director%s, %ld file%s\n",tot.dirs,(tot.dirs==1? "y":"ies"),tot.files,(tot.files==1? "":"s"));
 }

@@ -21,7 +21,7 @@ extern struct Flags flag;
 extern struct _info **(*getfulltree)(char *d, u_long lev, dev_t dev, off_t *size, char **err);
 extern int (*topsort)(struct _info **, struct _info **);
 extern FILE *outfile;
-extern int *dirs, errors;
+extern int *dirs, errors, maxdepth;
 extern ssize_t Level;
 extern size_t htmldirlen;
 
@@ -159,6 +159,9 @@ struct totals listdir(char *dirname, struct _info **dir, int lev, dev_t dev, boo
   if (topsort) qsort(dir, (size_t)n, sizeof(struct _info *), (int (*)(const void *, const void *))topsort);
 
   dirs[lev] = *(dir+1)? 1 : 2;
+  if(lev > maxdepth){
+    maxdepth = lev;
+  }
 
   path = xmalloc(sizeof(char) * pathlen);
 

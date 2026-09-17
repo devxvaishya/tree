@@ -97,6 +97,8 @@ struct Flags {
   bool reverse, fflinks, htmloffset, acl, selinux, condense_singletons;
   bool colorize, ansilines, linktargetcolor, remove_space;
   int flimit, compress_indent;
+  bool stat;
+  bool size;
 };
 
 struct _info {
